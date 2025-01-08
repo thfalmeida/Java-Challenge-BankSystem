@@ -11,7 +11,6 @@ import com.example.bankingsystem.entity.ClientAccount;
 import com.example.bankingsystem.exception.DuplicateCpfException;
 import com.example.bankingsystem.exception.ResourceNotFoundException;
 import com.example.bankingsystem.repository.ClientAccountRepository;
-import com.example.bankingsystem.util.LockManager;
 import com.example.bankingsystem.util.TransactionManager;
 
 @Service
@@ -22,9 +21,6 @@ public class ClientAccountService {
 
     @Autowired
     TransactionManager transactionManager;
-
-    @Autowired
-    LockManager lockManager;
 
     public ClientAccount CreateNewAccount(Client client){
         String clientCPF = client.getCpf();

@@ -22,11 +22,11 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 11)
+    @Column(unique = true, length = 11)
     @NotNull
     private String cpf;
 
-    @Column(nullable = false, length = 60)
+    @Column(length = 60)
     @NotNull
     private String name;
 

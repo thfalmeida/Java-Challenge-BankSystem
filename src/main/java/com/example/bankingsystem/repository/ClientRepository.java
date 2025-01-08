@@ -11,5 +11,7 @@ import com.example.bankingsystem.entity.Client;
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
     public Optional<Client> findByCpf(String cpf);
+
+    public boolean existsByCpf(String cpf);
     
 }

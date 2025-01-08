@@ -29,6 +29,7 @@ public class ClientController {
     @Operation(summary = "Cadastra um novo cliente")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Cliente cadastrado com sucesso"),
+        @ApiResponse(responseCode = "409", description = "CPF informado já cadastrado")
     })
     @PostMapping("/new")
     public ResponseEntity<Client> CreateClient(@RequestBody Client client){

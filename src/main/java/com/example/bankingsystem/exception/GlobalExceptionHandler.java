@@ -13,8 +13,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
     
-    @ExceptionHandler(InvalidAmountValue.class)
-    public ResponseEntity<String> handleInvalidAmountValue(InvalidAmountValue ex) {
+    @ExceptionHandler(InvalidTransactionAmountValue.class)
+    public ResponseEntity<String> InvalidTransactionAmountValue(InvalidTransactionAmountValue ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

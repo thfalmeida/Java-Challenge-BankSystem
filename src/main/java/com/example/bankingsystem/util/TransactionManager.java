@@ -10,7 +10,7 @@ import com.example.bankingsystem.DTO.TransactionRequest;
 import com.example.bankingsystem.entity.ClientAccount;
 import com.example.bankingsystem.enums.TransactionType;
 import com.example.bankingsystem.exception.InsufficientBalanceException;
-import com.example.bankingsystem.exception.InvalidAmountValue;
+import com.example.bankingsystem.exception.InvalidTransactionAmountValue;
 
 @Component
 public class TransactionManager {
@@ -25,7 +25,7 @@ public class TransactionManager {
             
             float transactionAmount = transaction.getAmount();
             if(transactionAmount <= 0)
-                throw new InvalidAmountValue("Valor não pode ser menor ou igual a zero");
+                throw new InvalidTransactionAmountValue("Valor não pode ser menor ou igual a zero");
         
             long clientAccountId = clientAccount.getId();
             lockManager.lock(clientAccountId);
@@ -52,7 +52,7 @@ public class TransactionManager {
             }
             lockManager.unlock(clientAccountId);
         }
-        
+
         return clientAccount;
     }
 }

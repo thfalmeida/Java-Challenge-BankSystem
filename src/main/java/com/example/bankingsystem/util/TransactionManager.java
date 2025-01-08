@@ -41,6 +41,7 @@ public class TransactionManager {
                     break;
                 case WITHDRAW:
                     if(transactionAmount > currentBalance){
+                        lockManager.unlock(clientAccountId);
                         throw new InsufficientBalanceException("Saldo indisponível para o saque");
                     }
 

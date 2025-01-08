@@ -3,24 +3,25 @@ package com.example.bankingsystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
-import com.example.bankingsystem.DTO.TransactionOperation;
 import com.example.bankingsystem.DTO.TransactionRequest;
 import com.example.bankingsystem.entity.Client;
 import com.example.bankingsystem.entity.ClientAccount;
-import com.example.bankingsystem.enums.TransactionType;
 import com.example.bankingsystem.exception.DuplicateCpfException;
 import com.example.bankingsystem.exception.ResourceNotFoundException;
 import com.example.bankingsystem.repository.ClientAccountRepository;
 import com.example.bankingsystem.util.LockManager;
+import com.example.bankingsystem.util.TransactionManager;
 
 @Service
 public class ClientAccountService {
 
     @Autowired
     ClientAccountRepository clientAccountRepository;
+
+    @Autowired
+    TransactionManager transactionManager;
 
     @Autowired
     LockManager lockManager;
@@ -50,49 +51,10 @@ public class ClientAccountService {
 
 
     public ClientAccount ProcessTransactions(Client client, TransactionRequest transactionsRequest){
-        List<TransactionOperation> transactions = transactionsRequest.getOperations();
-        for (TransactionOperation transaction : transactions) {
-            TransactionType type = transaction.getType();
-            float amount = transaction.getAmount();
-            switch (type) {
-                case DEPOSIT:
-                    Deposit(client, amount);
-                    break;
-                case WITHDRAW:
-                    Withdrawl(client, amount);
-                default:
-                    break;
-            }
-        }
-        return null;
+        ClientAccount clientAccount = GetClientAccount(client); 
+
+        ClientAccount processedClientAccount = transactionManager.ProcessTransaction(clientAccount, transactionsRequest);
+        clientAccountRepository.save(processedClientAccount);
+        return processedClientAccount;
     }
-
-    private ClientAccount Deposit(Client client, float value){
-        ClientAccount clientAccount = GetClientAccount(client);
-        long clientAccountId = clientAccount.getId();
-
-        lockManager.lock(clientAccountId);
-
-        clientAccount.DepositValue(value);
-        clientAccountRepository.save(clientAccount);
-
-        lockManager.unlock(clientAccountId);
-
-        return clientAccount;
-    }
-
-    private ClientAccount Withdrawl(Client client, float value){
-        ClientAccount clientAccount = GetClientAccount(client);
-        long clientAccountId = clientAccount.getId();
-
-        lockManager.lock(clientAccountId);
-
-        clientAccount.WithdrawalValue(value);
-        clientAccountRepository.save(clientAccount);
-
-        lockManager.unlock(clientAccountId);
-
-        return clientAccount;
-    }
-    
 }

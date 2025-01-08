@@ -1,7 +1,5 @@
 package com.example.bankingsystem.entity;
 
-import com.example.bankingsystem.exception.InsufficientBalanceException;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -23,18 +21,4 @@ public class ClientAccount {
         this.clientCPF = clientCPF;
         this.balance = 0;
     } 
-
-    public void DepositValue(float depositValue){
-        balance += depositValue;
-    }
-
-    public void WithdrawalValue(float withdrawalValue){
-        if(balance >= withdrawalValue){
-            balance -= withdrawalValue;
-        }else{
-            throw new InsufficientBalanceException("Saldo insuficiente");
-        }
-    }
-
-
 }
